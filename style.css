@@ -97,6 +97,10 @@ body {
   background: #f8f8f8;
  }
 
+ p {
+  color: #4a4a4a;
+ }
+
 h1 {
 font-family: 'Abril Fatface', cursive;
   font-size: 5em;
