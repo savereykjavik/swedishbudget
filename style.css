@@ -14,7 +14,7 @@ nav { display: none;
 
 /*color schemes*/
 .teal {
-    background: linear-gradient(165deg, #44cbf4, #0a8794 59%);
+    background: linear-gradient(165deg, rgba(106, 243, 211, 0.62), #0a8794 59%);
 
   /*background-color: #1fb2a0;*/
   /*background-color: #00A591;*/
