@@ -14,10 +14,10 @@ nav { display: none;
 
 /*color schemes*/
 .teal {
-background: linear-gradient(170deg, #44cbf4 2%, #0a8794 76%);
+    background: linear-gradient(165deg, #44cbf4, #0a8794 59%);
 
-/*background-color: #1fb2a0;*/
-/*background-color: #00A591;*/
+  /*background-color: #1fb2a0;*/
+  /*background-color: #00A591;*/
   /*background-color: #0a8794;*/
   color: #fff;
 }
@@ -38,8 +38,8 @@ hr {
 /* hero content*/
 
 .hero {
-  padding-top: 50px;
-  padding-bottom: 60px;
+  padding-top: 40px;
+  padding-bottom: 0px;
 }
 
 .hero .col-md-4 {
