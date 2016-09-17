@@ -1,0 +1,554 @@
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+  <script src="http://code.angularjs.org/1.2.2/angular-animate.min.js"></script>
+  <link href='https://fonts.googleapis.com/css?family=Abril+Fatface' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
+
+  <!-- css -->
+  <link rel="stylesheet" type="text/css" href="style.css">
+  
+
+  <!-- jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+  </head>
+
+
+<body>
+
+<!-- navigation panel -->
+<nav class="navbar navbar-default">
+  <div class="container">
+  
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-main">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+
+    <div class="collapse navbar-collapse" id="navbar-collapse-main">
+    <ul class="nav navbar-nav">
+          <li><a href="#"><img id="homeicon" src="images/homedark.png"/></a></li>
+      </ul>
+    </div>
+
+  </div>
+</nav>
+<!-- end navigation panel -->
+
+<div class="container-fluid teal hero">
+  <div class="container">
+
+    <div class="col-md-8 right middle-text">
+      <h1>Sveriges budget</h1>
+      <h3>Navigera dig genom statsbudgeten</h3>
+    </div>
+    <div class="col-md-4">
+      <img class="poster" src="images/finansminister3.png"></img>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+<div class="container-fluid light-gray intro">
+  <div class="container">
+
+    <div class="col-md-6">
+        <h2>892 miljarder kronor</h2>
+        <p>År 2015 uppgick statsbudgeten utgifter till 892 miljarder kronor. Utgufterna är indelade i 27 utgiftsområden, och under dessa finns totalt ca 500 så kallade anslag för olika utgifter. Ett anslag är en summa pengar och kan gälla maxtaxa i barnomsorgen eller underhåll av vägar. </br>För mer information kring budgeten eller ett specifikt utgiftsområde, kan du gå till t.ex. <a href="http://www.regeringen.se/sveriges-regering/finansdepartementet/statens-budget/" target="blank">Finansdepartementet</a> eller <a href="https://sv.wikipedia.org/wiki/Sveriges_statsbudget" target="blank">Wikipedia</a>.</p>
+    </div>
+
+    <div class="col-md-6">
+        <h2>Öppen data...</h2>
+        <p>Är inte alltid så lättläst. Statsbudgeten är offentlig information, men inte särskilt lätttillgänglig i form av tabeller under regeringens hemsida och i olika dokument, så jag ville visualisera budgeten på ett överskådligt sätt. Du kan klicka på staplar för att se anslagen under varje utgiftsområde. När staplar är grå, har de inga fler budgetnivåer. Håll pekaren över en text eller stapel för mer information.</p>
+    </div>
+
+  </div>
+</div>
+
+
+<div class="container-fluid light-gray" id="chartholder">
+  <hr>
+  <div class="container">
+    <div id="chart">
+    </div>
+
+    <!-- angular -->
+    <div ng-app="myApp" >
+      <div id="my-ctrl" ng-controller="myCtrl">
+        <div id="legend">
+
+          <div ng-repeat="legend in legends" ng-animate=" 'animate' " class="legendR {{legend.style}}">
+            <p class="legendName">{{legend.text}}</p>
+            <p class="legendNo">{{legend.value}}</p>
+          </div>
+
+          <div ng-show="hoverNode.visible" ng-animate=" 'animate' " class="legendR pop">
+            <p class="legendName">{{hoverNode.text}}</p>
+            <p class="legendNo">{{hoverNode.value}}</p>
+          </div>
+
+        <div>
+      </div>
+    <div>
+    <!-- end angular -->
+
+  </div>
+</div>
+
+<script language="javascript">
+
+  var listaUtanfor = [];
+  var hoverNode = {visible: false};
+
+  // ======= angular things ===================================================================
+
+  function initScope($scope) {
+    $scope.legends = listaUtanfor;
+    $scope.hoverNode = hoverNode;
+  }
+
+  function updateAngular() {
+    angular.element(document.getElementById("my-ctrl"))
+      .scope().$apply(initScope);
+  }
+
+  var app = angular.module('myApp', []);
+  app.controller('myCtrl', initScope);
+
+</script>
+
+
+<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+<script>
+
+
+
+var formatNumber = d3.format(",");
+
+var svgHeight = 2000
+var svgWidth = 1000
+
+var margin = {top: 60, right: 0, bottom: 120, left: 220},
+    width = 0.7*svgWidth - margin.left - margin.right,
+    widthR = 0.3 * svgWidth,
+    height = svgHeight - margin.top - margin.bottom;
+
+var x = d3.scale.linear()
+    .range([0, width]);
+
+var barHeight = 20;
+
+var color = d3.scale.ordinal()
+    .range(["#f28686", "rgb(113, 113, 113)"]);
+
+var duration = 600,
+    delay = 10;
+
+var partition = d3.layout.partition()
+    .value(function(d) { return d.size; });
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .ticks(5)
+    .tickFormat(function(n) { 
+      return d3.format("s")(n * 1000)
+      .replace(/G|M|K/gi, function(matched){ return seFormat[matched];});
+     })
+    .innerTickSize(-svgHeight)
+    .outerTickSize(0)
+    .orient("top");
+
+var seFormat = {
+   G:" Mdr",
+   M:" Mn",
+   K:" Tkr"
+};
+
+var seFullFormat = {
+   G:" Miljarder",
+   M:" Miljoner",
+   K:" Tusen kr"
+};
+
+// Replace SI-units with swedish values
+var displayNumber = function(n) { 
+  return d3.format(".3s")(n * 1000).replace(/G|M|K/gi, function(matched){ 
+    return seFullFormat[matched];
+  });
+};
+
+// get bottom of viewport
+var scrollBottom = $(window).scrollTop() + $(window).height();
+// get scroll position of chart div
+var chartDiv = $( "#chart" );
+var chartPos = chartDiv.position();
+
+
+
+var svg = d3.select("#chart").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+svg.append("rect")
+    .attr("class", "background")
+    .attr("width", width)
+    .attr("height", height)
+    .on("click", up);
+
+svg.append("g")
+    .attr("class", "x axis");
+
+svg.append("g")
+    .attr("class", "y axis")
+  .append("line")
+    .attr("y1", height)
+    .style("stroke", "#ddd")
+    .style("stroke-width", "1");
+
+
+// lägger in text
+svg.append("text")
+  .classed("goback tillbaka", true)
+    .text('⬅' + " Tillbaka upp")
+    .on("click", up)
+      .attr("x", -100)
+      .attr("y", 20);
+      // .style("fill", "rgb(1, 142, 156)");
+
+d3.json("budget.json", function(error, root) {
+  if (error) throw error;
+
+  partition.nodes(root);
+  x.domain([0, root.value]).nice();
+  down(root, 0);
+});
+
+
+function createLegend(d) {
+  var legend = [];
+  var first = true;
+  do {
+    legend.push({text: d.name, value: displayNumber(d.value), style: first ? '' : 'half'});
+    first = false;
+    d = d.parent;
+  }
+  while (d);
+  return legend.reverse();
+} 
+
+
+function down(d, i) {
+
+  console.log(d.name, d.value);
+
+  if (!d.children || this.__transition__) return;
+  var end = duration + d.children.length * delay;
+
+  listaUtanfor = createLegend(d);
+  updateAngular();
+
+  // listaUtanfor.pop();
+  // listaUtanfor.push({text: d.name, value: displayNumber(d.value), style: '' });
+
+  // for (var j = listaUtanfor.length-1; j > 0; j--) {
+  //   listaUtanfor[j-1].style = 'half';
+  // };
+
+  // console.log(d);
+  // updateAngular();
+
+  // Mark any currently-displayed bars as exiting.
+  var exit = svg.selectAll(".enter")
+      .attr("class", "exit");
+
+  // Entering nodes immediately obscure the clicked-on bar, so hide it.
+  exit.selectAll("rect").filter(function(p) { return p === d; })
+      .style("fill-opacity", 1e-6);
+
+  // Enter the new bars for the clicked-on data.
+  // Per above, entering bars are immediately visible.
+  var enter = bar(d)
+      .attr("transform", stack(i))
+      .style("opacity", 1);
+
+  // Have the text fade-in, even though the bars are visible.
+  // Color the bars as parents; they will fade to children if appropriate.
+  enter.select("text").style("fill-opacity", 1e-6);
+  enter.select("rect")
+    .attr("fill", color(true))
+    ;
+
+  // Update the x-scale domain.
+  x.domain([0, d3.max(d.children, function(d) { return d.value; })]).nice();
+
+  // Update the x-axis.
+  svg.selectAll(".x.axis").transition()
+      .duration(duration)
+      .call(xAxis);
+
+  // Transition entering bars to their new position.
+  var enterTransition = enter.transition()
+      .duration(duration)
+      .delay(function(d, i) { return i * delay; })
+      .attr("transform", function(d, i) { return "translate(0," + barHeight * i * 1.2 + ")"; });
+
+  // Transition entering text.
+  enterTransition.select("text")
+      .style("fill-opacity", 1);
+
+  // Transition entering rects to the new x-scale.
+  enterTransition.select("rect")
+      .attr("width", function(d) { return x(d.value); })
+      .style("fill", function(d) { return color(!!d.children); });
+
+  // Transition exiting bars to fade out.
+  var exitTransition = exit.transition()
+      .duration(duration)
+      .style("opacity", 1e-6)
+      .remove();
+
+  // Transition exiting bars to the new x-scale.
+  // exitTransition.selectAll("rect")
+  //     .attr("width", function(d) { return x(d.value); });
+
+  // Rebind the current node to the background.
+  svg.select(".background")
+      .datum(d)
+    .transition()
+      .duration(end);
+
+
+  // Rebind the current node to the background.
+  svg.selectAll(".goback")
+      .datum(d)
+    .transition()
+      .duration(end);
+
+  // Rebind the current node to the background.
+  svg.selectAll(".gobackpost")
+      .datum(d)
+      .text(function(d){
+        return ( (d.name == "flare" ? "Sveriges statsbudget" : d.name) + ": " + 
+          d3.format(".3s")(d.value * 1000)
+            .replace(/G|M|K/gi, function(matched){ 
+              return seFullFormat[matched];
+            })
+          );
+      })
+    .transition()
+      .duration(end);
+
+
+  d.index = i;
+}
+
+function up(d) {
+
+  if (!d.parent || this.__transition__) { return;
+  }
+
+  listaUtanfor = createLegend(d.parent);
+  updateAngular();
+
+  // listaUtanfor.pop();
+  // listaUtanfor[listaUtanfor.length - 1].style = '';
+  // updateAngular();
+
+  var end = duration + d.children.length * delay;
+
+  // Mark any currently-displayed bars as exiting.
+  var exit = svg.selectAll(".enter")
+      .attr("class", "exit");
+
+  // Enter the new bars for the clicked-on data's parent.
+  var enter = bar(d.parent)
+      .attr("transform", function(d, i) { return "translate(0," + barHeight * i * 1.2 + ")"; })
+      .style("opacity", 1e-6);
+
+  // Color the bars as appropriate.
+  // Exiting nodes will obscure the parent bar, so hide it.
+  enter.select("rect")
+      .style("fill", function(d) { return color(!!d.children); })
+    .filter(function(p) { return p === d; })
+      .style("fill-opacity", 1e-6);
+
+  // Update the x-scale domain.
+  x.domain([0, d3.max(d.parent.children, function(d) { return d.value; })]).nice();
+
+  // Update the x-axis.
+  svg.selectAll(".x.axis").transition()
+      .duration(duration)
+      .call(xAxis);
+
+  // Transition entering bars to fade in over the full duration.
+  var enterTransition = enter.transition()
+      .duration(end)
+      .style("opacity", 1);
+
+  // Transition entering rects to the new x-scale.
+  // When the entering parent rect is done, make it visible!
+  enterTransition.select("rect")
+      .attr("width", function(d) { return x(d.value); })
+      .each("end", function(p) { if (p === d) d3.select(this).style("fill-opacity", null); });
+
+  // Transition exiting bars to the parent's position.
+  var exitTransition = exit.selectAll("g").transition()
+      .duration(duration)
+      .delay(function(d, i) { return i * delay; })
+      .attr("transform", stack(d.index));
+
+  // Transition exiting text to fade out.
+  exitTransition.select("text")
+      .style("fill-opacity", 1e-6);
+
+  // Transition exiting rects to the new scale and fade to parent color.
+  exitTransition.select("rect")
+      .attr("width", function(d) { return x(d.value); })
+      .style("fill", color(true));
+
+  // Remove exiting nodes when the last child has finished transitioning.
+  exit.transition()
+      .duration(end)
+      .remove();
+
+  // Rebind the current parent to the background.
+  svg.select(".background")
+      .datum(d.parent)
+    .transition()
+      .duration(end);
+
+  // Rebind the current parent to the background.
+  svg.selectAll(".gobackpost")
+      .datum(d.parent)
+      .text(function(d){
+        return ( (d.name == "flare" ? "Sveriges statsbudget" : d.name) + ": " + 
+          d3.format(".3s")(d.value * 1000)
+            .replace(/G|M|K/gi, function(matched){ 
+              return seFullFormat[matched];
+            })
+          );
+      })
+    .transition()
+      .duration(end);
+
+  // Rebind the current parent to the background.
+  svg.selectAll(".goback")
+      .datum(d.parent)
+    .transition()
+      .duration(end);
+}
+
+
+// Creates a set of bars for the given data node, at the specified index.
+function bar(d) {
+
+
+
+// set updated height of chart
+  var numberOfBars = d.children.length;
+  var getHeight = numberOfBars * barHeight * 1.2 + (d.depth != 0 ? barHeight * 1.2 : 0) + 5;
+  // if (getHeight < svgHeight) getHeight = svgHeight;
+  console.log(getHeight);
+
+  d3.select("svg").attr("height", getHeight + margin.top);
+  d3.select(".background").attr("height", getHeight);
+
+  d3.selectAll(".tillbaka")
+    .style("opacity", function() {
+      return d.depth == 0 ? 0: 1;
+    })
+    .classed("dontShow", function() {
+      return d.depth == 0 ? true : false;
+    })
+  ;
+
+
+
+  var bar = svg.insert("g", ".y.axis")
+      .attr("class", "enter")
+      .attr("transform", function() {
+        return "translate(0," + (d.depth == 0 ? '5' : '29') + ")";
+      })
+    .selectAll("g")
+      .data(d.children)
+    .enter().append("g")
+      .style("cursor", function(d) { return !d.children ? "default" : "pointer"; })
+      .on("mouseover", function(d) {
+
+        hoverNode.text = d.name; 
+        hoverNode.value = displayNumber(d.value);
+        hoverNode.visible = true;
+        updateAngular();
+
+      })
+      .on("click", function(d, i) {
+        down(d, i);
+        hoverNode.visible = false;
+        updateAngular();
+        $("html, body").animate({
+          scrollTop:$('#chart').position().top-40
+        }, "slow");
+      })
+      .on("mouseout", function(d) {
+
+        hoverNode.visible = false;
+        updateAngular();
+
+      });
+
+
+  bar.append("text")
+      .attr("x", -6)
+      .attr("y", barHeight / 2)
+      .attr("dy", ".35em")
+      .style("text-anchor", "end")
+      .text(function(d) { 
+        if (d.name.length > 37) {
+            return d.name.substring(0,36)+"...";
+        } else {
+          return d.name;
+        }
+      });
+
+  bar.append("rect")
+      .attr("width", function(d) { return x(d.value); })
+      .attr("height", barHeight)
+      .attr("class", "bar");
+
+  return bar;
+
+
+}
+
+// A stateful closure for stacking bars horizontally.
+function stack(i) {
+  var x0 = 0;
+  return function(d) {
+    var tx = "translate(" + 
+      x0 + "," + 
+      (barHeight * i * 1.2 - (d.depth==2 ? 24 : 0)) + ")";
+    x0 += x(d.value);
+    return tx;
+  };
+}
+
+</script>
+
+
+</body>
