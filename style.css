@@ -1,5 +1,5 @@
 /* CSS reset */
-body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td { 
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td {
     margin:0;
     padding:0;
 }
@@ -9,14 +9,16 @@ html,body {
     font-size: 14px;
 }
 
-
+nav { display: none;
+  }
 
 /*color schemes*/
 .teal {
+background: linear-gradient(170deg, #44cbf4 2%, #0a8794 76%);
 
 /*background-color: #1fb2a0;*/
 /*background-color: #00A591;*/
-  background-color: #0a8794;
+  /*background-color: #0a8794;*/
   color: #fff;
 }
 
@@ -191,17 +193,17 @@ svg {
 
 .tooltip {
 	opacity: 0;
-	position: absolute;                
-	max-width: 200px;                                  
-	padding: 12px 20px 12px 20px;            
+	position: absolute;
+	max-width: 200px;
+	padding: 12px 20px 12px 20px;
 	font: 14px sans-serif;
 	font-family: "Helvetica Neue";
   color: #5b5b5b;
-	font-weight: 300;  
+	font-weight: 300;
 	background: #fff;
- 	border: 1px solid #ddd; 
-  border-radius: 7px;  
-	pointer-events: none;  
+ 	border: 1px solid #ddd;
+  border-radius: 7px;
+	pointer-events: none;
 }
 
 .half {
