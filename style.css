@@ -19,6 +19,7 @@ nav { display: none;
 .footer a {
   opacity: 0.6;
   color: white;
+  font-weight: bold;
 }
 /*color schemes*/
 .teal {
