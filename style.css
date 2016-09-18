@@ -17,7 +17,7 @@ nav { display: none;
   padding-bottom: 20px;
 }
 .footer a {
-  text-decoration: underline;
+  opacity: 0.6;
   color: white;
 }
 /*color schemes*/
