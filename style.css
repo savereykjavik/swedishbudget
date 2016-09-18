@@ -12,6 +12,11 @@ html,body {
 nav { display: none;
   }
 
+.footer {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
 /*color schemes*/
 .teal {
     background: linear-gradient(165deg, rgba(106, 243, 211, 0.62), #0a8794 59%);
