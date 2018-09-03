@@ -24,7 +24,8 @@ nav { display: none;
 }
 /*color schemes*/
 .teal {
-    background: linear-gradient(165deg, rgba(106, 243, 211, 0.62), #0a8794 59%);
+  background: linear-gradient(165deg, #3862f5, #0872f5 59%);
+  /* background: linear-gradient(165deg, rgba(106, 243, 211, 0.62), #0a8794 59%); */
 
   /*background-color: #1fb2a0;*/
   /*background-color: #00A591;*/
@@ -108,7 +109,13 @@ body {
  }
 
  .intro p {
-  color: #4a4a4a;
+  color: #555;
+  -webkit-margin-before: 1em;
+  -webkit-margin-after: 1em;
+  -webkit-margin-start: 0px;
+  -webkit-margin-end: 0px;
+  line-height: 1.5;
+  font-family: "Open Sans",arial,x-locale-body,sans-serif;
  }
 
 h1 {
@@ -116,7 +123,6 @@ font-family: 'Abril Fatface', cursive;
   font-size: 5em;
   font-weight: 400;
   line-height: 1.4em;
-  text-shadow: 0 1px #fff;
 }
 
 h2 {
@@ -130,13 +136,15 @@ h3 {
   font-size: 1.8em;
   line-height: 1.2em;
   font-weight: 300;
+  font-family: "Lato";
 }
 
 .container-fluid {
-	width: 100%;
+  width: 100%;
 }
 
 .container {
+    overflow: -webkit-paged-x;
     width: 100%;
     max-width: 1050px;
 }
@@ -172,7 +180,7 @@ h3 {
   font-size: 15px;
   font-weight: 300;
   color: #5B5B5B;
-  text-shadow: 0px 1px lightgrey;
+  /* text-shadow: 0px 1px lightgrey; */
   padding-top: 50px;
 }
 
@@ -227,8 +235,8 @@ svg {
 
 .pop {
   background-color: #f8f8f8 !important;
-  border: 5px dotted #0a8794 !important;
-  color: #0a8794 !important;
+  border: 5px dotted #0872f5 !important;
+  color: #0872f5 !important;
 }
 
 #chart {
@@ -245,9 +253,9 @@ svg {
 }
 
 .legendR {
-  border: 5px solid #0a8794;
+  border: 5px solid #0872f5;
   margin-bottom: 10px;
-  background-color: #0a8794;
+  background-color: #0872f5;
   font-size: 1em;
   line-height: 1.4;
   color: #fff;
