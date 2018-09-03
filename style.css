@@ -108,7 +108,13 @@ body {
  }
 
  .intro p {
-  color: #4a4a4a;
+  color: #555;
+  -webkit-margin-before: 1em;
+  -webkit-margin-after: 1em;
+  -webkit-margin-start: 0px;
+  -webkit-margin-end: 0px;
+  line-height: 1.5;
+  font-family: "Open Sans",arial,x-locale-body,sans-serif;
  }
 
 h1 {
