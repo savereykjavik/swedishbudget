@@ -5,6 +5,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="keywords" content="Sveriges budget, svpol, graf, politik, statistik, datavisualisering">
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-125174639-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-125174639-1');
+  </script>
+
+
   <meta property="og:url"                content="https://savereykjavik.github.io/swedishbudget" />
   <meta property="og:type"               content="article" />
   <meta property="og:title"              content="Statsbudgeten"/>
@@ -102,12 +113,12 @@
 
     <div class="col-md-6">
         <h2>Miljarder hit & dit</h2>
-      <p>År 2018 uppgår statsbudgetens utgiftsområden till <b>1 001 miljarder kronor</b>. Utgifterna är indelade i 27 utgiftsområden och under dessa finns totalt ca 500 så kallade anslag för olika utgifter.</p> <p>Statsbudgeten finansieras huvudsakligen av statens skatteinkomster, och budgeten uppdateras flera gånger under året.</br>För mer information kring budgeten eller olika utgiftsområden, kan du gå till t.ex. <a href="http://www.regeringen.se/sveriges-regering/finansdepartementet/statens-budget/" target="blank">Finansdepartementet</a> eller <a href="https://sv.wikipedia.org/wiki/Sveriges_statsbudget" target="blank">Wikipedia</a>.</p>
+      <p>År 2018 uppgår statsbudgetens utgiftsområden till <b>1 001 miljarder kronor</b> (det är första året som budgeten överstiger 1 biljard). Utgifterna är indelade i 27 utgiftsområden och under dessa finns totalt ca 500 så kallade anslag för olika utgifter.</p> <p>Statsbudgeten finansieras huvudsakligen av statens skatteinkomster, och budgeten uppdateras flera gånger under året. För mer information kring budgeten eller olika utgiftsområden, kan du gå till t.ex. <a href="http://www.regeringen.se/sveriges-regering/finansdepartementet/statens-budget/" target="blank">Finansdepartementet</a> eller <a href="https://sv.wikipedia.org/wiki/Sveriges_statsbudget" target="blank">Wikipedia</a>.</p>
     </div>
 
     <div class="col-md-6">
         <h2>Öppen data</h2>
-        <p>Statsbudgeten är offentlig information, men inte särskilt lätttillgänglig i form av tabeller i pdf-dokument. Jag ville visualisera budgeten på ett överskådligt sätt, för ett lite bättre perspektiv på hur olika summor förhåller sig till varandra.</p> <p> <b>Du kan klicka på staplar för att se anslagen under varje utgiftsområde.</b> När staplar är grå, har de inga fler budgetnivåer. Håll pekaren över en text eller stapel för mer information.</p>
+        <p>Statsbudgeten är offentlig information, men inte särskilt lätttillgänglig i form av tabeller i pdf-dokument. Jag ville visualisera budgeten på ett överskådligt sätt, för att få ett lite bättre perspektiv på hur olika summor förhåller sig till varandra.</p> <p> <b>Du kan klicka på staplar för att se anslagen under varje utgiftsområde.</b> När staplar är grå, har de inga fler budgetnivåer. Håll pekaren över en text eller stapel för mer information.</p>
     </div>
 
   </div>
@@ -191,7 +202,7 @@ var formatNumber = d3.format(",");
 var svgHeight = 2000
 var svgWidth = 1000
 
-var margin = {top: 60, right: 0, bottom: 120, left: 220},
+var margin = {top: 40, right: 0, bottom: 120, left: 220},
     width = 0.7*svgWidth - margin.left - margin.right,
     widthR = 0.3 * svgWidth,
     height = svgHeight - margin.top - margin.bottom;
