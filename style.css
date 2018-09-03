@@ -103,8 +103,7 @@ hr {
 
 body {
   -webkit-font-smoothing: antialiased;
-  font-family: "Open Sans",arial,x-locale-body,sans-serif;
- /*  font-family: "Lato", sans serif; */
+  font-family: "Lato", sans serif;
   background: #f8f8f8;
  }
 
@@ -134,7 +133,7 @@ h3 {
 }
 
 .container-fluid {
-	width: 100%;
+  width: 100%;
 }
 
 .container {
@@ -173,7 +172,7 @@ h3 {
   font-size: 15px;
   font-weight: 300;
   color: #5B5B5B;
-  text-shadow: 0px 1px lightgrey;
+  /* text-shadow: 0px 1px lightgrey; */ 
   padding-top: 50px;
 }
 
