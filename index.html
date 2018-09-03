@@ -9,12 +9,16 @@
   <meta property="og:type"               content="article" />
   <meta property="og:title"              content="Statsbudgeten"/>
   <meta property="og:description"        content="Visualisering över Sveriges statsbudget" />
-  <meta property="og:image"              content="http://boodata.se/opengraph.jpg" />
+  <meta property="og:image"              content="https://savereykjavik.github.io/swedishbudget/opengraph.jpg" />
 
 
   <title>Statsbudgeten - Visualisering av Sveriges statsbudget</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-
+  <script src="http://code.angularjs.org/1.2.2/angular-animate.min.js"></script>
+  <link href='https://fonts.googleapis.com/css?family=Abril+Fatface' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
 
   <link rel="apple-touch-icon" sizes="57x57" href="favicon/apple-icon-57x57.png">
   <link rel="apple-touch-icon" sizes="60x60" href="favicon/apple-icon-60x60.png">
@@ -34,24 +38,18 @@
   <meta name="msapplication-TileImage" content="favicon/ms-icon-144x144.png">
   <meta name="theme-color" content="#ffffff">
 
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!--
+  <script src="getbudget.js" type="text/javascript"></script> -->
 
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <!-- Latest compiled and minified JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
-  <script src="http://code.angularjs.org/1.2.2/angular-animate.min.js"></script>
-  <link href='https://fonts.googleapis.com/css?family=Abril+Fatface' rel='stylesheet' type='text/css'>
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
+
 
   <!-- css -->
   <link rel="stylesheet" type="text/css" href="style.css">
-
-  <!-- jQuery -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
   </head>
 
@@ -87,7 +85,7 @@
 
     <div class="col-md-8 right middle-text">
       <h1>Sveriges budget</h1>
-      <h3>Navigera dig genom statsbudgeten 2015</h3>
+      <h3>Navigera dig genom statsbudgeten 2018</h3>
     </div>
     <div class="col-md-4">
       <img class="poster" src="images/finansminister3.png"></img>
@@ -104,7 +102,7 @@
 
     <div class="col-md-6">
         <h2>Miljarder hit & dit</h2>
-      <p>År 2015 uppgick statsbudgetens utgiftsområden till <b>874 miljarder kronor</b>. Utgifterna är indelade i 27 utgiftsområden och under dessa finns totalt ca 500 så kallade anslag för olika utgifter.</p> <p>Statsbudgeten finansieras huvudsakligen av statens skatteinkomster, och budgeten uppdateras flera gånger under året.</br>För mer information kring budgeten eller olika utgiftsområden, kan du gå till t.ex. <a href="http://www.regeringen.se/sveriges-regering/finansdepartementet/statens-budget/" target="blank">Finansdepartementet</a> eller <a href="https://sv.wikipedia.org/wiki/Sveriges_statsbudget" target="blank">Wikipedia</a>.</p>
+      <p>År 2018 uppgår statsbudgetens utgiftsområden till <b>1 001 miljarder kronor</b>. Utgifterna är indelade i 27 utgiftsområden och under dessa finns totalt ca 500 så kallade anslag för olika utgifter.</p> <p>Statsbudgeten finansieras huvudsakligen av statens skatteinkomster, och budgeten uppdateras flera gånger under året.</br>För mer information kring budgeten eller olika utgiftsområden, kan du gå till t.ex. <a href="http://www.regeringen.se/sveriges-regering/finansdepartementet/statens-budget/" target="blank">Finansdepartementet</a> eller <a href="https://sv.wikipedia.org/wiki/Sveriges_statsbudget" target="blank">Wikipedia</a>.</p>
     </div>
 
     <div class="col-md-6">
@@ -148,12 +146,18 @@
 
 <div class="footer teal">
   <div class="container">
-  Caroline Thordenberg | Data Strategist | twitter <a href="https://twitter.com/thordenberg" target="_blank">@thordenberg</a> | 2018 </br>
-  Kolla även in min visualisering av bostadsmarknaden och slutpriser på <a href="http://boodata.se" target="_blank">Boodata.se</a>
+  Caroline Thordenberg | Data Strategist | twitter: <a href="https://twitter.com/thordenberg" target="_blank">@thordenberg</a> | 2018 </br>
+  Kolla även in min visualisering av bostadsmarknaden och slutpriser på <a href="http://boodata.se?ref=svebudget" target="_blank">Boodata.se</a>
   </div>
 </div>
 
 <script language="javascript">
+
+  // function getdata(root) {
+  //   // noop
+  // };
+  //
+  // getbudget(getdata);
 
   var listaUtanfor = [];
   var hoverNode = {visible: false};
@@ -220,18 +224,20 @@ var xAxis = d3.svg.axis()
 var seFormat = {
    G:" Mdr",
    M:" Mn",
-   K:" Tkr"
+   K:" Tkr",
+   T:" Biljon"
 };
 
 var seFullFormat = {
    G:" Miljarder",
    M:" Miljoner",
-   K:" Tusen kr"
+   K:" Tusen kr",
+   T:" Biljoner kr"
 };
 
 // Replace SI-units with swedish values
 var displayNumber = function(n) {
-  return d3.format(".3s")(n * 1000).replace(/G|M|K/gi, function(matched){
+  return d3.format(".4s")(n * 1000).replace(/G|M|K|T/gi, function(matched){
     return seFullFormat[matched];
   });
 };
@@ -276,11 +282,12 @@ svg.append("text")
       .attr("y", 20);
       // .style("fill", "rgb(1, 142, 156)");
 
-d3.json("budget.json", function(error, root) {
+d3.json("budget18.json", function(error, root) {
   if (error) throw error;
 
   partition.nodes(root);
   x.domain([0, root.value]).nice();
+  // console.log(root);
   down(root, 0);
 });
 
@@ -300,7 +307,7 @@ function createLegend(d) {
 
 function down(d, i) {
 
-  console.log(d.name, d.value);
+  // console.log(d.name, d.value);
 
   if (!d.children || this.__transition__) return;
   var end = duration + d.children.length * delay;
@@ -509,7 +516,7 @@ function bar(d) {
   var numberOfBars = d.children.length;
   var getHeight = numberOfBars * barHeight * 1.2 + (d.depth != 0 ? barHeight * 1.2 : 0) + 5;
   // if (getHeight < svgHeight) getHeight = svgHeight;
-  console.log(getHeight);
+  // console.log(getHeight);
 
   d3.select("svg").attr("height", getHeight + margin.top);
   d3.select(".background").attr("height", getHeight);
@@ -575,6 +582,15 @@ function bar(d) {
       .attr("width", function(d) { return x(d.value); })
       .attr("height", barHeight)
       .attr("class", "bar");
+
+// lägga till procent senare
+  // bar.append("text")
+  //     .attr("x", function(d) { return x(d.value) * 9.15 + 4; })
+  //     .attr("y", barHeight / 2)
+  //     .attr("dy", ".35em")
+  //     .text(function(d) {
+  //         return (d.value / 10005149.94 + "%");
+  //     });
 
   return bar;
 
