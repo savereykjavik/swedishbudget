@@ -144,7 +144,7 @@ h3 {
 }
 
 .container {
-    overflow: -webkit-paged-x;
+/*    overflow: -webkit-paged-x; */ 
     width: 100%;
     max-width: 1050px;
 }
