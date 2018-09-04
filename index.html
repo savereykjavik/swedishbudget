@@ -204,15 +204,7 @@ Caroline Thordenberg | Data Strategist | twitter: <a href="https://twitter.com/t
 var formatNumber = d3.format(",");
 
 var svgHeight = 2000
-var svgWidth;
-
-if (viewPortWidth < 500 ) {
-  svgWidth = 500;
-  } else { 
-    if (viewPortWidth > 1000) {
-      svgWidth = viewPortWidth;
-    } else { svgWidth = viewPortWidth;  }
-};
+var svgWidth = 1000
 
 var margin = {top: 40, right: 0, bottom: 120, left: 220},
     width = 0.7*svgWidth - margin.left - margin.right,
