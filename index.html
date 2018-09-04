@@ -249,7 +249,7 @@ var seFullFormat = {
 
 // Replace SI-units with swedish values
 var displayNumber = function(n) {
-  return d3.format(".4s")(n * 1000).replace(/G|M|K|T/gi, function(matched){
+  return d3.format(".3s")(n * 1000).replace(/G|M|K|T/gi, function(matched){
     return seFullFormat[matched];
   });
 };
